@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TenisKortuUygulamaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Bills">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Rezervation" Type="Int32" />
+    <Property Name="Amount" Type="Double" />
+    <Property Name="isPaid" Type="Boolean" />
+    <NavigationProperty Name="Rezervation1" Relationship="Self.FK_Bills_Rezervation" FromRole="Bills" ToRole="Rezervation" />
+  </EntityType>
+  <EntityType Name="Fields">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="length" Type="Double" />
+    <Property Name="width" Type="Double" />
+    <NavigationProperty Name="Rezervation" Relationship="Self.FK_Rezervation_Fields" FromRole="Fields" ToRole="Rezervation" />
+    <NavigationProperty Name="Queue" Relationship="TenisKortuUygulamaModel.FK_Queue_Fields" FromRole="Fields" ToRole="Queue" />
+  </EntityType>
+  <EntityType Name="Hours">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Hour" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Rezervation" Relationship="Self.FK_Rezervation_Hours" FromRole="Hours" ToRole="Rezervation" />
+    <NavigationProperty Name="Queue" Relationship="TenisKortuUygulamaModel.FK_Queue_Hours" FromRole="Hours" ToRole="Queue" />
+  </EntityType>
+  <EntityType Name="Queue">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsersId" Type="Int32" />
+    <Property Name="QueueDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Queue_Users" FromRole="Queue" ToRole="Users" />
+    <Property Name="HoursId" Type="Int32" />
+    <Property Name="FieldsId" Type="Int32" />
+    <NavigationProperty Name="Fields" Relationship="TenisKortuUygulamaModel.FK_Queue_Fields" FromRole="Queue" ToRole="Fields" />
+    <NavigationProperty Name="Hours" Relationship="TenisKortuUygulamaModel.FK_Queue_Hours" FromRole="Queue" ToRole="Hours" />
+    <Property Name="IsComplated" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="Rezervation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsersId" Type="Int32" />
+    <Property Name="FieldsId" Type="Int32" />
+    <Property Name="Date" Type="DateTime" Precision="3" />
+    <Property Name="HoursId" Type="Int32" />
+    <Property Name="IsComplated" Type="Boolean" />
+    <NavigationProperty Name="Bills" Relationship="Self.FK_Bills_Rezervation" FromRole="Rezervation" ToRole="Bills" />
+    <NavigationProperty Name="Fields" Relationship="Self.FK_Rezervation_Fields" FromRole="Rezervation" ToRole="Fields" />
+    <NavigationProperty Name="Hours" Relationship="Self.FK_Rezervation_Hours" FromRole="Rezervation" ToRole="Hours" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Rezervation_Users" FromRole="Rezervation" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="isMember" Type="Boolean" />
+    <NavigationProperty Name="Queue" Relationship="Self.FK_Queue_Users" FromRole="Users" ToRole="Queue" />
+    <NavigationProperty Name="Rezervation" Relationship="Self.FK_Rezervation_Users" FromRole="Users" ToRole="Rezervation" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_Bills_Rezervation">
+    <End Role="Rezervation" Type="Self.Rezervation" Multiplicity="0..1" />
+    <End Role="Bills" Type="Self.Bills" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rezervation">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Bills">
+        <PropertyRef Name="Rezervation" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rezervation_Fields">
+    <End Role="Fields" Type="Self.Fields" Multiplicity="0..1" />
+    <End Role="Rezervation" Type="Self.Rezervation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fields">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rezervation">
+        <PropertyRef Name="FieldsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rezervation_Hours">
+    <End Role="Hours" Type="Self.Hours" Multiplicity="0..1" />
+    <End Role="Rezervation" Type="Self.Rezervation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hours">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rezervation">
+        <PropertyRef Name="HoursId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Queue_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Queue" Type="Self.Queue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Queue">
+        <PropertyRef Name="UsersId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rezervation_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="Rezervation" Type="Self.Rezervation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Rezervation">
+        <PropertyRef Name="UsersId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TenisKortuUygulamaEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Bills" EntityType="Self.Bills" />
+    <EntitySet Name="Fields" EntityType="Self.Fields" />
+    <EntitySet Name="Hours" EntityType="Self.Hours" />
+    <EntitySet Name="Queue" EntityType="Self.Queue" />
+    <EntitySet Name="Rezervation" EntityType="Self.Rezervation" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK_Bills_Rezervation" Association="Self.FK_Bills_Rezervation">
+      <End Role="Rezervation" EntitySet="Rezervation" />
+      <End Role="Bills" EntitySet="Bills" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rezervation_Fields" Association="Self.FK_Rezervation_Fields">
+      <End Role="Fields" EntitySet="Fields" />
+      <End Role="Rezervation" EntitySet="Rezervation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rezervation_Hours" Association="Self.FK_Rezervation_Hours">
+      <End Role="Hours" EntitySet="Hours" />
+      <End Role="Rezervation" EntitySet="Rezervation" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Queue_Users" Association="Self.FK_Queue_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Queue" EntitySet="Queue" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rezervation_Users" Association="Self.FK_Rezervation_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Rezervation" EntitySet="Rezervation" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(TenisKortuUygulamaModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(TenisKortuUygulamaModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <AssociationSet Name="FK_Queue_Fields" Association="TenisKortuUygulamaModel.FK_Queue_Fields">
+      <End Role="Fields" EntitySet="Fields" />
+      <End Role="Queue" EntitySet="Queue" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Queue_Hours" Association="TenisKortuUygulamaModel.FK_Queue_Hours">
+      <End Role="Hours" EntitySet="Hours" />
+      <End Role="Queue" EntitySet="Queue" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <Association Name="FK_Queue_Fields">
+    <End Type="TenisKortuUygulamaModel.Fields" Role="Fields" Multiplicity="0..1" />
+    <End Type="TenisKortuUygulamaModel.Queue" Role="Queue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Fields">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Queue">
+        <PropertyRef Name="FieldsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Queue_Hours">
+    <End Type="TenisKortuUygulamaModel.Hours" Role="Hours" Multiplicity="0..1" />
+    <End Type="TenisKortuUygulamaModel.Queue" Role="Queue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Hours">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Queue">
+        <PropertyRef Name="HoursId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

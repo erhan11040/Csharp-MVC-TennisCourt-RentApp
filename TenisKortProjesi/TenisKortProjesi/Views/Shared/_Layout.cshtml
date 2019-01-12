@@ -1,0 +1,113 @@
+﻿<html>
+<head>
+
+
+    <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Tenis Türkiye</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+
+  
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
+</head>
+<style>
+    .imager {
+        width: auto;
+        height: 500px;
+    }
+
+.slider1 { background: url('~/Content/Resources/Images/slide1.jpg'); background-size: cover; background-position: center center; height: 750px; margin-bottom: 100px; }
+
+.slider2 { background: url('~/Content/Resources/Images/slide1.jpg'); background-size: cover; background-position: center center; height: 750px; margin-bottom: 100px; }
+
+.slider3 { background: url('~/Content/Resources/Images/slide3.jpg'); background-size: cover; background-position: center center; height: 750px; margin-bottom: 100px; }
+
+    .slider4 {
+        background: url('~/Content/Resources/Images/slide4.jpg');
+        background-size: cover;
+        background-position: center center;
+        height: 750px;
+        margin-bottom: 100px;
+    }
+</style>
+
+<body style="background-color: #EFFFDC;" >
+
+
+    <headers>
+        <nav class="navbar navbar-expand-sm navbar-light" style="background-color: #EFFFDC;">
+            <img class="logo-default" style="width:105px; height: auto; margin-top: -20px; margin-bottom: -20px;" src="~/Content/Resources/Images/Logo.png" alt="Logo">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample03">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" }) <span class="sr-only">(current)</span></a>
+                        
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Rezervation", "Rezervation", "Home", null, new { @class = "nav-link" }) <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Kortlarımız</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " href="#">Hakkımızda</a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav ">
+                    
+                        @if (Convert.ToBoolean(Session["isLogin"]) == false)
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Login", "Login", "Users", null,new { @class = "nav-link" })
+                                </li>
+                                <li class="nav-item">
+                                    @Html.ActionLink("Register", "Register", "Users", null,new { @class = "nav-link" })
+                                    </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink(@Session["Name"].ToString(), "", "", null,new { @class = "nav-link" })
+                                </li>
+                                <li class="nav-item">
+                                    @Html.ActionLink("Profile", "GetProfile", "Users", new { id = Convert.ToInt32(@Session["id"].ToString())},new { @class = "nav-link" })
+                                </li>
+                            <li class="nav-item">
+                                @Html.ActionLink("LogOut", "Logout", "Users", null,new { @class = "nav-link" })
+                                </li>
+                                }
+
+                                <!---  <li class="nav-item">
+
+                  </li> -->
+
+</ul>
+            </div>
+        </nav>
+    </headers>
+
+        @RenderBody()
+    @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+       @RenderSection("scripts", required: false)
+
+
+
+
+</body>
+</html>

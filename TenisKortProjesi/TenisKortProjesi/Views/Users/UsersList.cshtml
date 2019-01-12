@@ -1,0 +1,11 @@
+﻿@model IEnumerable<TenisKortProjesi.Models.Users>
+
+@{
+    ViewBag.Title = "UsersList";
+}
+
+@foreach(var item in Model)
+{
+    <h3>@item.id &nbsp;&nbsp; @item.Name &nbsp;&nbsp; @item.Surname &nbsp;&nbsp;@item.Phone &nbsp;&nbsp;@item.Password</h3>
+}
+

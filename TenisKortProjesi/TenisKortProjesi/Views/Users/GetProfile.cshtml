@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TenisKortProjesi.Models.UsersProfile>
+@{
+    ViewBag.Title = "Profile";
+}
+<h2>Profile</h2>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Surname</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Fields</th>
+                            <th scope="col">Hour</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ 
+                            int sayac = 0;
+
+                            foreach (var item in Model)
+                            {
+                                sayac = sayac + 1;
+                            <tr>
+                                <th scope="row">@sayac</th>
+                                <td>@item.Name</td>
+                                <td>@item.Surname</td>
+                                <td>@item.Phone</td>
+                                <td>@item.FieldsId</td>
+                                <td>@item.Hour</td>
+                            </tr>
+                                }
+                            }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

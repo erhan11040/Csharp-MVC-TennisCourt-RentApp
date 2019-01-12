@@ -1,0 +1,197 @@
+﻿@model TenisKortProjesi.Models.ViewModel
+@{
+    ViewBag.Title = "Rezervation";
+}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well-block">
+                <div class="well-title">
+                    <h2>Rezervation</h2>
+                </div>
+                <form name="form1" id="form1" action="/Home/Rezervation" method="post">
+                    <!-- Form start -->
+                    <div class="row">
+                        @if (Convert.ToBoolean(Session["isLogin"]) == true)
+                        {
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="name">Name</label>
+                                    <input id="Name" name="Name" type="text" value="@Model.users.Name" placeholder="Name" class="form-control input-md" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="name">Surname</label>
+                                    <input id="Surname" name="Surname" type="text" value="@Model.users.Surname" placeholder="Surname" class="form-control input-md" readonly>
+                                </div>
+                            </div>
+                    <!-- Text input-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="email">Phone</label>
+                                    <input id="Phone" name="Phone" type="text" value="@Model.users.Phone" placeholder="Phone" class="form-control input-md" readonly>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="name">Name</label>
+                                    <input id="Name" name="Name" type="text" placeholder="Name" class="form-control input-md">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="name">Surname</label>
+                                    <input id="Surname" name="Surname" type="text" placeholder="Surname" class="form-control input-md">
+                                </div>
+                            </div>
+                    <!-- Text input-->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label" for="email">Phone</label>
+                                    <input id="Phone" name="Phone" type="text" placeholder="Phone" class="form-control input-md">
+                                </div>
+                            </div>
+                        }
+                        <!-- Text input-->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="date">Preferred Date</label>
+                                <input id="Date" name="Date" type="date" placeholder="Preferred Date" class="form-control input-md">
+                            </div>
+                        </div>
+                        <!-- Select Basic -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label" for="time">Preffered Time</label>
+
+                                <select id="Hour" name="Hour" class="form-control">
+                                    @foreach (var item in Model.hours)
+                                    {
+                                        <option value="@item.id">@item.Hour .00</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Select Basic -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label" for="appointmentfor">Appointment For</label>
+                                <select id="Field" name="Field" class="form-control">
+                                    @foreach (var item in Model.fields)
+                                    {
+                                        <option value="@item.id">@item.id --Kort</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Button -->
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <button id="singlebutton" type="button" name="singlebutton" onclick="MakeRezerVation();" class="btn btn-default">Make Rezervation</button><br /><br />
+                                <label id="isFinish" style="color:Green"></label>
+                                <button class="btn btn-warning" id="BtnQueue" style="visibility:hidden;" onclick="AjaxQueue()" type="button">Geçerli Rezervasyon Tarihi için Sıraya Gir!</button>
+                                @Html.Raw(TempData["msg"])
+
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- form end -->
+
+                
+            </div>
+        </div>
+    </div>
+    <!--
+        
+    Daha sonra yapacağız.
+        -->
+    <h3>Dolu olan kortlarımız</h3>
+    <table>
+        <tr>
+            <th>Saat</th>
+            <th>Tarih</th>
+            <th>KortNo</th>
+            <th>RezervasyonNo</th>
+
+        </tr>
+      
+   @foreach(TenisKortProjesi.Models.Rezervation item   in ViewBag.rezervation)
+    {
+        <tr>
+            
+            <td>
+                @item.Hours.Hour;
+            </td>
+            <td>
+                @item.Date
+            </td>
+            <td>
+                Kort-
+                @item.FieldsId
+            </td>
+            <td>
+                @item.id
+            </td>
+
+        </tr>
+    }
+     </table>
+</div>
+<script>
+    function MakeRezerVation() {
+        // $("#form1").ajaxSubmit({ url: '/Home/AjaxQueue', type: 'post' })
+        $.ajax({
+            url: '/Home/Rezervation',
+            type: 'POST',
+            dataType: 'json',
+            data: $("#form1").serialize(),
+            success: function (data) {
+                console.log(data);
+                if (data.Status == "OK")
+                    toastr.success(data.Message);
+                else {
+                    if (data.Status == "Warning") 
+                    {
+                        toastr.warning(data.Message);
+                        document.getElementById('BtnQueue').style.visibility = 'visible';
+                    }  
+                    else
+                        toastr.error(data.Message);
+                }
+                    
+            }
+        });
+    }
+
+    function AjaxQueue() {
+        
+        var Phone = $("#Phone").val();
+        var Hour = $("#Hour").val();
+        var Field = $("#Field").val();
+        var Date = $("#Date").val();
+        var Name = $('#Name').val();
+        var Surname = $('#Surname').val();
+        
+        $.ajax({
+            url: '/Home/AjaxQueue?Phone=' + Phone + "&Hour=" + Hour + "&Field=" + Field + "&Date=" + Date + "&Name=" + Name + "&Surname=" + Surname,
+            type: 'Get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.Status=="OK")
+                    toastr.success(data.Message);
+                else
+                    toastr.error(data.Message);
+            }
+        });
+    }
+</script>

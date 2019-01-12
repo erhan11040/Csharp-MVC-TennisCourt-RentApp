@@ -1,0 +1,51 @@
+﻿@model TenisKortProjesi.Models.ViewModel
+@{
+    ViewBag.Title = "Bills";
+}
+
+<h2>Bills</h2>
+<div class="container">
+    <form action="Home/BillsQuery" method="Get">
+        <input class="col-md-6 form-control input-md" id="txPhone" placeholder="Fafturasını görmek istediğini kullanıcının Telefon numarasını giriniz." name="txPhone" type="text" />
+        <button type="submit" class="col-md-6 btn btn-warning">Ara</button>
+    </form>
+    <table>
+        <tr>
+            <th>Saat</th>
+            <th>Tarih</th>
+            <th>KortNo</th>
+            <th>RezervasyonNo</th>
+            <th>Ücret</th>
+
+        </tr>
+        @foreach (var item in Model.BillLister)
+        {
+            <tr>
+
+                <td>
+                    @item.Hour;
+                </td>
+                <td>
+                    @item.Date;
+                </td>
+                <td>
+                    Kort-
+                    @item.FieldId;
+                </td>
+                <td>
+                    @item.Id;
+                </td>
+                <td>
+                    @item.Amounth;
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>
+<script>
+
+</script>
+
+

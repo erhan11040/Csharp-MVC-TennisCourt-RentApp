@@ -1,0 +1,58 @@
+﻿@model TenisKortProjesi.Models.Rezervation
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Rezervation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsComplated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsComplated)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fields.id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fields.id)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hours.Hour)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hours.Hour)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Users.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Users.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
